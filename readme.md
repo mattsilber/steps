@@ -28,55 +28,36 @@ For convenience, there is a base View to inflate, called *R.layout.step__base_mo
 If you want to use your own resources, make sure your root View is a DraggableLinearLayout (supplied with the library) if you want the content to be swipe-able.
 
 
-The following is an example Activity showing how to mimich the GIF above:
+### Example from the Gif
 
 ```
 public class MainActivity extends ActionBarActivity implements StepController.StepEventListener {
-
-    private Dialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.step__test_textview).setOnClickListener((v) -> showDialog());
+        new Handler(Looper.getMainLooper())
+                .postDelayed(() -> showDialog(), 300);
     }
 
     private void showDialog(){
-        View v = getLayoutInflater().inflate(R.layout.step__content, null, false);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setView(v);
-
-        dialog = builder.show();
-
-        StepController controller = new StepController(v, getModules(), this);
+        new StepDialogBuilder(this)
+                .show(this, getModules());
     }
 
     private List<StepModule> getModules(){
         List<StepModule> modules = new ArrayList<StepModule>();
 
         for(int i = 0; i < 5; i++)
-            modules.add(buildFakeModule());
+            modules.add(new BaseStepModule(R.drawable.some_image, "Some awesome title", "This is some text This is some more text And even more text And more"));
 
         return modules;
     }
 
-    private StepModule buildFakeModule(){
-        return new StepModule(R.layout.step__base_module) {
-            @Override
-            protected void setup(StepController controller, View content) {
-                ((ImageView) content.findViewById(R.id.step__base_model_image)).setImageResource(R.drawable.cu__ptr_pulling_image);
-                ((TextView) content.findViewById(R.id.step__base_model_title)).setText("Some title");
-                ((TextView) content.findViewById(R.id.step__base_model_description)).setText(generateRandomDescription());
-            }
-        };
-    }
-
     private String generateRandomDescription(){
-        String random = "This is random text ";
+        String random = "";
 
         String toReturn = "";
         for(int i = 0; i < new Random().nextInt(20) + 3; i++)
@@ -87,21 +68,28 @@ public class MainActivity extends ActionBarActivity implements StepController.St
 
     @Override
     public void onFinished() {
-        dismissDialog();
+        new Handler(Looper.getMainLooper())
+                .postDelayed(() -> showDialog(), 1000);
     }
 
     @Override
     public void onSkipped() {
-        dismissDialog();
-    }
-
-    private void dismissDialog(){
-        try{
-            dialog.dismiss();
-        }
-        catch(Exception e){ }
+        new Handler(Looper.getMainLooper())
+                .postDelayed(() -> showDialog(), 1000);
     }
 }
 ```
 
+So, basically all you need to do is call
+
+    new StepDialogBuilder(this)
+                .show(this, getModules());
+
+And just pass in a list of Modules and an EventListsner (which can be null if you don't want to do anything after).
+
+### BaseStepModule
+
+The BaseModule helper class can set the image resource, title, and description values for the Views found in the *step__base_module* layout file. Just pass in the arguments to its constructor and it handles the rest. e.g.
+
+    new BaseStepModule(R.drawable.some_image, "Some title", "Some description"));
 

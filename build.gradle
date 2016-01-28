@@ -35,6 +35,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.1.+'
 }
 
 group = 'com.guardanis'
@@ -48,7 +49,7 @@ ext {
     artifact = 'steps'
 
     libraryDescription = 'A controller enabling a paginated layout style'
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'mattsilber'
     developerName = 'Matt Silber'
