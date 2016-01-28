@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.guardanis.steps.views.draggable.DraggableLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/step__nav_base_module_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/step__base_module_padding">
+
+    <ImageView
+        android:id="@+id/step__base_model_image"
+        android:layout_width="@dimen/step__base_module_image"
+        android:layout_height="@dimen/step__base_module_image"
+        android:adjustViewBounds="true"/>
+
+    <TextView
+        android:id="@+id/step__base_model_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="@dimen/step__base_module_title_padding_top"
+        android:textColor="@color/step__nav_base_module_title"
+        android:textSize="@dimen/step__base_module_title"/>
+
+    <TextView
+        android:id="@+id/step__base_model_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/step__base_module_description_padding_bottom"
+        android:paddingTop="@dimen/step__base_module_description_padding_top"
+        android:textColor="@color/step__nav_base_module_description"
+        android:textSize="@dimen/step__base_module_description"/>
+
+</com.guardanis.steps.views.draggable.DraggableLinearLayout>

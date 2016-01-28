@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="step__content_bg">#3C9ADF</color>
+
+    <color name="step__nav_action_next">#ECF0F1</color>
+    <color name="step__nav_action_previous">#ECF0F1</color>
+    <color name="step__nav_action_skip">#ECF0F1</color>
+
+    <color name="step__nav_action_bg">#00000000</color>
+    <color name="step__nav_action_bg_pressed">#33FFFFFF</color>
+
+    <color name="step__nav_indicator_active">#ECF0F1</color>
+    <color name="step__nav_indicator_inactive">#42262626</color>
+
+    <color name="step__nav_base_module_bg">#3C9ADF</color>
+
+    <color name="step__nav_base_module_title">#FAFAFA</color>
+    <color name="step__nav_base_module_description">#ECF0F1</color>
+
+</resources>

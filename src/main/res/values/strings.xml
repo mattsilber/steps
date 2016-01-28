@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="step__nav_text_next">Next</string>
+    <string name="step__nav_text_finish">Finish</string>
+    <string name="step__nav_text_previous">Back</string>
+    <string name="step__nav_text_skip">Back</string>
+
+</resources>

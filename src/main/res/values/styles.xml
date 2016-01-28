@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="step__nav_action">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">@dimen/step__nav_action_padding</item>
+        <item name="android:paddingRight">@dimen/step__nav_action_padding</item>
+        <item name="android:background">@drawable/step__nav_action</item>
+        <item name="android:textSize">@dimen/step__nav_action</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+</resources>

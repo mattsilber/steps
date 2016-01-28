@@ -1,0 +1,5 @@
+<resources>
+
+    <integer name="step__anim_duration">300</integer>
+
+</resources>
