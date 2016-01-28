@@ -12,7 +12,7 @@ A controller enabling a paginated layout style in either a Dialog or a full-scre
     }
 
     dependencies {
-        compile('com.guardanis:steps:1.0.0')
+        compile('com.guardanis:steps:1.0.1')
     }
 ```
 
