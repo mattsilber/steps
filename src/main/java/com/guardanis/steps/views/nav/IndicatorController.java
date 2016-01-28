@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.guardanis.steps.R;
 import com.guardanis.steps.StepController;
-import com.guardanis.steps.StepModule;
 
 public class IndicatorController {
 
