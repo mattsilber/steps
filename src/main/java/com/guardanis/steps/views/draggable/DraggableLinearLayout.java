@@ -53,6 +53,7 @@ public class DraggableLinearLayout extends LinearLayout implements OnTouchListen
     @Override
     public void onDraw(Canvas canvas) {
         canvas.translate(draggedDistance, 0);
+
         super.onDraw(canvas);
     }
 
@@ -70,7 +71,8 @@ public class DraggableLinearLayout extends LinearLayout implements OnTouchListen
 
             draggedDistance = 0;
         }
-        else onDragged((int) (event.getX() - touchStart));
+        else
+            onDragged((int) (event.getX() - touchStart));
 
         if(event.getAction() == MotionEvent.ACTION_UP)
             onTouchActionUp((int) event.getX());
@@ -93,9 +95,11 @@ public class DraggableLinearLayout extends LinearLayout implements OnTouchListen
         if(eventListener != null && isDragThresholdSet()){
             if(isHorizontalThresholdReached()){
                 dragEnabled = !disabledOnThresholdReached;
+
                 eventListener.onDragThresholdReached(draggedDistance);
             }
-            else if(snapBackOnReleaseBelowThreshold) snapBackToZero();
+            else if(snapBackOnReleaseBelowThreshold)
+                snapBackToZero();
         }
     }
 
@@ -142,6 +146,7 @@ public class DraggableLinearLayout extends LinearLayout implements OnTouchListen
                     }
                 }
                 catch(Exception e){ e.printStackTrace(); }
+
                 onSnapAnimationFinished();
             }
         });
@@ -174,6 +179,7 @@ public class DraggableLinearLayout extends LinearLayout implements OnTouchListen
                 snapAnimationThread.stop();
             }
             catch(Exception e){ }
+
             snapAnimationRunning = false;
             snapAnimationThread = null;
         }

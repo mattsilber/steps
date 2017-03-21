@@ -41,13 +41,16 @@ public class IndicatorView extends View {
     protected void init(){
         setWillNotDraw(false);
 
-        activePaint.setColor(getContext().getResources().getColor(R.color.step__nav_indicator_active));
+        activePaint.setColor(getResources()
+                .getColor(R.color.step__nav_indicator_active));
         activePaint.setAntiAlias(true);
 
-        inactivePaint.setColor(getContext().getResources().getColor(R.color.step__nav_indicator_inactive));
+        inactivePaint.setColor(getResources()
+                .getColor(R.color.step__nav_indicator_inactive));
         inactivePaint.setAntiAlias(true);
 
-        itemRadius = getContext().getResources().getDimension(R.dimen.step__nav_indicator_radius);
+        itemRadius = getResources()
+                .getDimension(R.dimen.step__nav_indicator_radius);
     }
 
     @Override
@@ -58,7 +61,10 @@ public class IndicatorView extends View {
             setupPoints(canvas);
 
         for(int i = 0; i < items.size(); i++)
-            canvas.drawCircle(items.get(i).x, items.get(i).y, itemRadius, activeIndex == i ? activePaint : inactivePaint);
+            canvas.drawCircle(items.get(i).x,
+                    items.get(i).y,
+                    itemRadius,
+                    activeIndex == i ? activePaint : inactivePaint);
     }
 
     private void setupPoints(Canvas canvas) {
@@ -67,7 +73,9 @@ public class IndicatorView extends View {
         float center = canvas.getWidth() / 2;
         float spacing = Math.min(canvas.getWidth() / itemsCount, getContext().getResources().getDimension(R.dimen.step__nav_indicator_spacing));
 
-        float requiredWidth = (itemRadius * itemsCount) + (spacing * (itemsCount - 1));
+        float requiredWidth = (itemRadius * itemsCount)
+                + (spacing * (itemsCount - 1));
+
         float halfWidth = requiredWidth / 2;
 
         for(int i = 0; i < itemsCount; i++)

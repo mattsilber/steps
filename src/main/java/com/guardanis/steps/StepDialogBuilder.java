@@ -38,6 +38,12 @@ public class StepDialogBuilder implements StepController.StepEventListener {
     }
 
     @Override
+    public void onStepLoaded(StepModule module, int index) {
+        if(eventListener != null)
+            eventListener.onStepLoaded(module, index);
+    }
+
+    @Override
     public void onFinished() {
         safelyDismissDialog();
 

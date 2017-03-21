@@ -14,6 +14,8 @@ public class IndicatorController {
     private TextView actionPrevious;
     private TextView actionSkip;
 
+    private boolean hideAllActions = false;
+
     public IndicatorController(final StepController controller, View root){
         this.indicatorView = (IndicatorView) root.findViewById(R.id.step__nav_indicator);
 
@@ -39,27 +41,45 @@ public class IndicatorController {
         });
     }
 
+    public void setHideAllActions(boolean hideAllActions){
+        this.hideAllActions = hideAllActions;
+    }
+
     public void update(StepController controller, int currentIndex, int itemsCount){
         indicatorView.update(currentIndex, itemsCount);
+
+        if(hideAllActions){
+            actionNext.setVisibility(View.GONE);
+            actionPrevious.setVisibility(View.GONE);
+            actionSkip.setVisibility(View.GONE);
+
+            return;
+        }
+        else
+            actionNext.setVisibility(View.VISIBLE);
 
         updateActionNext(controller, currentIndex, itemsCount);
         updateActionPrevious(controller, currentIndex, itemsCount);
         updateActionSkip(controller, currentIndex, itemsCount);
     }
 
-    private void updateActionNext(StepController controller, int currentIndex, int itemsCount){
+    protected void updateActionNext(StepController controller, int currentIndex, int itemsCount){
         if(currentIndex == itemsCount - 1)
-            actionNext.setText(controller.getResources().getString(R.string.step__nav_text_finish));
-        else actionNext.setText(controller.getResources().getString(R.string.step__nav_text_next));
+            actionNext.setText(controller.getResources()
+                    .getString(R.string.step__nav_text_finish));
+        else
+            actionNext.setText(controller.getResources()
+                    .getString(R.string.step__nav_text_next));
     }
 
-    private void updateActionPrevious(StepController controller, int currentIndex, int itemsCount){
+    protected void updateActionPrevious(StepController controller, int currentIndex, int itemsCount){
         if(currentIndex < 1)
             actionPrevious.setVisibility(View.GONE);
-        else actionPrevious.setVisibility(View.VISIBLE);
+        else
+            actionPrevious.setVisibility(View.VISIBLE);
     }
 
-    private void updateActionSkip(StepController controller, int currentIndex, int itemsCount){
+    protected void updateActionSkip(StepController controller, int currentIndex, int itemsCount){
         if(currentIndex > 0)
             actionSkip.setVisibility(View.GONE);
         else if(controller.isSkipEnabled())

@@ -15,6 +15,7 @@ import java.util.List;
 public class StepController {
 
     public interface StepEventListener {
+        public void onStepLoaded(StepModule module, int index);
         public void onFinished();
         public void onSkipped();
     }
@@ -27,6 +28,7 @@ public class StepController {
 
     private StepEventListener eventListener;
     private boolean skipEnabled = false;
+    private boolean finishable = true;
 
     private boolean animatingTransition = false;
 
@@ -47,7 +49,13 @@ public class StepController {
 
         if(currentModuleIndex < modules.size())
             animateNextStepIn();
-        else eventListener.onFinished();
+        else if(finishable)
+            eventListener.onFinished();
+        else{
+            currentModuleIndex--;
+
+            resetDraggableContent(true);
+        }
     }
 
     public void onPreviousStep(){
@@ -58,13 +66,16 @@ public class StepController {
 
         if(currentModuleIndex < 0){
             currentModuleIndex = 0;
+
             resetDraggableContent(true);
         }
-        else animatePreviousStepIn();
+        else
+            animatePreviousStepIn();
     }
 
     public void onSkip(){
-        eventListener.onSkipped();
+        if(isSkipEnabled())
+            eventListener.onSkipped();
     }
 
     private void loadFirstModule(){
@@ -78,9 +89,13 @@ public class StepController {
         final View view = prepareTransition();
 
         if(parentView.getChildAt(0) != null)
-            parentView.getChildAt(0).startAnimation(AnimationUtils.loadAnimation(parentView.getContext(), R.anim.left_out));
+            parentView.getChildAt(0)
+                    .startAnimation(AnimationUtils.loadAnimation(parentView.getContext(),
+                            R.anim.left_out));
 
-        view.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(), R.anim.right_in));
+        view.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(),
+                R.anim.right_in));
+
         setDraggableTouchesEnabled(view, false);
 
         addView(view);
@@ -90,9 +105,13 @@ public class StepController {
         final View view = prepareTransition();
 
         if(parentView.getChildAt(0) != null)
-            parentView.getChildAt(0).startAnimation(AnimationUtils.loadAnimation(parentView.getContext(), R.anim.right_out));
+            parentView.getChildAt(0)
+                    .startAnimation(AnimationUtils.loadAnimation(parentView.getContext(),
+                            R.anim.right_out));
 
-        view.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(), R.anim.left_in));
+        view.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(),
+                R.anim.left_in));
+
         setDraggableTouchesEnabled(view, false);
 
         addView(view);
@@ -109,8 +128,8 @@ public class StepController {
     }
 
     protected View inflateModule(){
-        LayoutInflater inflater = (LayoutInflater) parentView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return inflater.inflate(getActiveModule().getLayoutResId(), parentView, false);
+        return LayoutInflater.from(parentView.getContext())
+                .inflate(getActiveModule().getLayoutResId(), parentView, false);
     }
 
     protected void addView(final View view){
@@ -135,9 +154,15 @@ public class StepController {
     }
 
     protected void loadCurrentStepModule(View content){
-        getActiveModule().onViewLoaded(this, content);
+        getActiveModule()
+                .onViewLoaded(this, content);
 
-        indicatorController.update(this, currentModuleIndex, modules.size());
+        indicatorController.update(this,
+                currentModuleIndex,
+                modules.size());
+
+        eventListener.onStepLoaded(getActiveModule(),
+                currentModuleIndex);
     }
 
     public StepModule getActiveModule(){
@@ -150,26 +175,59 @@ public class StepController {
 
     protected void setDraggableTouchesEnabled(boolean touchEnabled){
         if(parentView.getChildAt(0) != null)
-            setDraggableTouchesEnabled(parentView.getChildAt(0), touchEnabled);
+            setDraggableTouchesEnabled(parentView.getChildAt(0),
+                    touchEnabled);
     }
 
     protected void setDraggableTouchesEnabled(View view, boolean touchEnabled){
         if(view != null && view instanceof DraggableLinearLayout)
-            ((DraggableLinearLayout)view).setDragEnabled(touchEnabled);
+            ((DraggableLinearLayout)view)
+                    .setDragEnabled(touchEnabled);
     }
 
     protected void resetDraggableContent(boolean animateSnap){
         if(parentView.getChildAt(0) != null && parentView.getChildAt(0) instanceof DraggableLinearLayout)
-            ((DraggableLinearLayout)parentView.getChildAt(0)).reset(animateSnap);
+            ((DraggableLinearLayout)parentView.getChildAt(0))
+                    .reset(animateSnap);
     }
 
-    public void setSkipEnabled(boolean skipEnabled) {
+    public StepController setSkipEnabled(boolean skipEnabled) {
         this.skipEnabled = skipEnabled;
-        indicatorController.update(this, currentModuleIndex, modules.size());
+
+        indicatorController.update(this,
+                currentModuleIndex,
+                modules.size());
+
+        return this;
+    }
+
+    /**
+     * Set whether or not the navigation action Views (previous, skip, and next) should be
+     * completely hidden. If set to true, you must either manually call the StepController
+     * navigation methods, or have your StepModule use the draggable layout.
+     */
+    public StepController setNavigationActionsHidden(boolean hidden){
+        indicatorController.setHideAllActions(hidden);
+
+        indicatorController.update(this,
+                currentModuleIndex,
+                modules.size());
+
+        return this;
     }
 
     public boolean isSkipEnabled(){
-        return skipEnabled;
+        return skipEnabled && finishable;
+    }
+
+    /**
+     * Set whether or not this StepController can ever finish. If false,
+     * neither StepEventListener.onFinished() nor StepEventListener.onSkipped() will
+     * be called, and isSkipEnabled() will return false
+     */
+    public StepController setFinishable(boolean finishable) {
+        this.finishable = finishable;
+        return this;
     }
 
     public Resources getResources(){

@@ -6,16 +6,15 @@ A controller enabling a paginated layout style in either a Dialog or a full-scre
 
 # Installation
 
-```
-    repositories {
-        jcenter()
-    }
+```groovy
+repositories {
+    jcenter()
+}
 
-    dependencies {
-        compile('com.guardanis:steps:1.0.1')
-    }
+dependencies {
+    compile('com.guardanis:steps:1.1.0')
+}
 ```
-
 
 # Usage
 
@@ -30,7 +29,7 @@ If you want to use your own resources, make sure your root View is a DraggableLi
 
 ### Example from the Gif
 
-```
+```java
 public class MainActivity extends ActionBarActivity implements StepController.StepEventListener {
 
     @Override
@@ -82,14 +81,19 @@ public class MainActivity extends ActionBarActivity implements StepController.St
 
 So, basically all you need to do is call
 
-    new StepDialogBuilder(this)
-                .show(this, getModules());
+```java
+new StepDialogBuilder(this)
+    .show(this, getModules());
+```
 
-And just pass in a list of Modules and an EventListsner (which can be null if you don't want to do anything after).
+And just pass in a list of Modules and an EventListener (which can be null if you don't want to do anything after).
 
 ### BaseStepModule
 
 The BaseModule helper class can set the image resource, title, and description values for the Views found in the *step__base_module* layout file. Just pass in the arguments to its constructor and it handles the rest. e.g.
 
-    new BaseStepModule(R.drawable.some_image, "Some title", "Some description"));
+```java
+new BaseStepModule(R.drawable.some_image, "Some title", "Some description"));
+```
+
 
