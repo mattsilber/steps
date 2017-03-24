@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 
 import com.guardanis.steps.views.draggable.DraggableLinearLayout;
 import com.guardanis.steps.views.nav.IndicatorController;
+import com.guardanis.steps.views.nav.IndicatorView;
 
 import java.util.List;
 
@@ -18,6 +19,10 @@ public class StepController {
         public void onStepLoaded(StepModule module, int index);
         public void onFinished();
         public void onSkipped();
+    }
+
+    public interface Binder<T> {
+        public void bind(T value);
     }
 
     private List<StepModule> modules;
@@ -227,6 +232,16 @@ public class StepController {
      */
     public StepController setFinishable(boolean finishable) {
         this.finishable = finishable;
+        return this;
+    }
+
+    public StepController bindIndicatorView(Binder<IndicatorView> binder){
+        indicatorController.bindIndicatorView(binder);
+        return this;
+    }
+
+    public StepController bindIndicatorController(Binder<IndicatorController> binder){
+        binder.bind(indicatorController);
         return this;
     }
 

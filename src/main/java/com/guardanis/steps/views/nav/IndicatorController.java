@@ -41,8 +41,9 @@ public class IndicatorController {
         });
     }
 
-    public void setHideAllActions(boolean hideAllActions){
+    public IndicatorController setHideAllActions(boolean hideAllActions){
         this.hideAllActions = hideAllActions;
+        return this;
     }
 
     public void update(StepController controller, int currentIndex, int itemsCount){
@@ -84,6 +85,10 @@ public class IndicatorController {
             actionSkip.setVisibility(View.GONE);
         else if(controller.isSkipEnabled())
             actionSkip.setVisibility(View.VISIBLE);
+    }
+
+    public void bindIndicatorView(StepController.Binder<IndicatorView> binder){
+        binder.bind(indicatorView);
     }
 
 }
