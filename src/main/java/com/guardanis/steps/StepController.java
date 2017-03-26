@@ -2,9 +2,11 @@ package com.guardanis.steps;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 
 import com.guardanis.steps.views.draggable.DraggableLinearLayout;
@@ -35,6 +37,9 @@ public class StepController {
     private boolean skipEnabled = false;
     private boolean finishable = true;
 
+    private int largestHeight = 0;
+    private boolean retainLargestHeight = false;
+
     private boolean animatingTransition = false;
 
     public StepController(View root, List<StepModule> modules, StepEventListener eventListener){
@@ -42,6 +47,8 @@ public class StepController {
         this.indicatorController = new IndicatorController(this, root);
         this.modules = modules;
         this.eventListener = eventListener;
+        this.retainLargestHeight = root.getResources()
+                .getBoolean(R.bool.step__retain_largest_height);
 
         loadFirstModule();
     }
@@ -162,12 +169,32 @@ public class StepController {
         getActiveModule()
                 .onViewLoaded(this, content);
 
+        requestHeightRetention(content);
+
         indicatorController.update(this,
                 currentModuleIndex,
                 modules.size());
 
         eventListener.onStepLoaded(getActiveModule(),
                 currentModuleIndex);
+    }
+
+    private void requestHeightRetention(final View content){
+        addGlobalLayoutRequest(content, new Runnable() {
+            public void run() {
+                int currentHeight = content.getHeight();
+
+                if(largestHeight < currentHeight)
+                    StepController.this.largestHeight = currentHeight;
+
+                if(retainLargestHeight){
+                    ViewGroup.LayoutParams params = content.getLayoutParams();
+                    params.height = largestHeight;
+
+                    content.setLayoutParams(params);
+                }
+            }
+        });
     }
 
     public StepModule getActiveModule(){
@@ -235,6 +262,15 @@ public class StepController {
         return this;
     }
 
+    /**
+     * Set whether or not the StepController should manually set a StepModule's layout height
+     * to the largest height displayed within this controller's session during View transitioning.
+     */
+    public StepController setRetainLargestHeight(boolean retainLargestHeight) {
+        this.retainLargestHeight = retainLargestHeight;
+        return this;
+    }
+
     public StepController bindIndicatorView(Binder<IndicatorView> binder){
         indicatorController.bindIndicatorView(binder);
         return this;
@@ -248,4 +284,26 @@ public class StepController {
     public Resources getResources(){
         return parentView.getResources();
     }
+
+    private void addGlobalLayoutRequest(final View v, final Runnable runnable){
+        v.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    public void onGlobalLayout() {
+                        runnable.run();
+
+                        removeOnGlobalLayoutListener(v, this);
+                    }
+                });
+
+        v.requestLayout();
+    }
+
+    private void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
+        if(Build.VERSION.SDK_INT < 16)
+            v.getViewTreeObserver()
+                    .removeGlobalOnLayoutListener(listener);
+        else v.getViewTreeObserver()
+                .removeOnGlobalLayoutListener(listener);
+    }
+
 }

@@ -1,4 +1,5 @@
 <resources>
 
+    <bool name="step__retain_largest_height">false</bool>
 
 </resources>
