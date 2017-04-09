@@ -49,7 +49,7 @@ ext {
     artifact = 'steps'
 
     libraryDescription = 'A controller enabling a paginated layout style'
-    libraryVersion = '1.1.2'
+    libraryVersion = '1.1.3'
 
     developerId = 'mattsilber'
     developerName = 'Matt Silber'

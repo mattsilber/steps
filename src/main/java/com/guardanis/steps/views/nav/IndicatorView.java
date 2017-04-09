@@ -28,6 +28,7 @@ public class IndicatorView extends View {
     protected int itemsCount = 0;
 
     protected float itemRadius;
+    protected float itemSpacing;
 
     public IndicatorView(Context context) {
         super(context);
@@ -57,6 +58,9 @@ public class IndicatorView extends View {
 
         itemRadius = getResources()
                 .getDimension(R.dimen.step__nav_indicator_radius);
+
+        itemSpacing = getResources()
+                .getDimension(R.dimen.step__nav_indicator_spacing);
     }
 
     /**
@@ -72,6 +76,14 @@ public class IndicatorView extends View {
      */
     public IndicatorView setInactiveColor(int color){
         inactivePaint.setColor(color);
+        return this;
+    }
+
+    /**
+     * Set the spacing, in pixels, between each item
+     */
+    public IndicatorView setItemSpacingPx(int spacingPx){
+        this.itemSpacing = spacingPx;
         return this;
     }
 
@@ -119,16 +131,13 @@ public class IndicatorView extends View {
     protected void setupPoints(Canvas canvas) {
         items = new ArrayList<Point>();
 
-        float center = canvas.getWidth() / 2;
-        float spacing = Math.min(canvas.getWidth() / itemsCount, getContext().getResources().getDimension(R.dimen.step__nav_indicator_spacing));
+        float drawWidth = ((itemRadius * 2) * itemsCount)
+                + (itemSpacing * (itemsCount - 1));
 
-        float requiredWidth = (itemRadius * itemsCount)
-                + (spacing * (itemsCount - 1));
-
-        float halfWidth = requiredWidth / 2;
+        float drawStartX = (canvas.getWidth() / 2) - (drawWidth / 2) + itemRadius;
 
         for(int i = 0; i < itemsCount; i++)
-            items.add(new Point((int)(center - halfWidth + itemRadius + ((itemRadius * 2) * i) + (spacing * i)),
+            items.add(new Point((int) (drawStartX + (i * (itemRadius * 2)) + (i * itemSpacing)),
                     canvas.getHeight() / 2));
     }
 
