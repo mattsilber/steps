@@ -5,7 +5,7 @@ import android.view.View;
 import com.guardanis.steps.views.draggable.DragEventListener;
 import com.guardanis.steps.views.draggable.DraggableLinearLayout;
 
-public abstract class StepModule<T extends StepController> {
+public abstract class StepModule {
 
     protected int layoutResId;
 
@@ -13,21 +13,17 @@ public abstract class StepModule<T extends StepController> {
         this.layoutResId = layoutResId;
     }
 
-    public void onViewLoaded(T controller, View content){
+    public void onViewLoaded(StepController controller, View content){
         if(content instanceof DraggableLinearLayout)
-            setupDraggableContent(controller,
-                    (DraggableLinearLayout) content);
+            setupDraggableContent(controller, (DraggableLinearLayout) content);
 
         setup(controller, content);
     }
 
-    protected abstract void setup(T controller, View content);
+    protected abstract void setup(StepController controller, View content);
 
-    protected void setupDraggableContent(final T controller, DraggableLinearLayout content){
-        content.setDragThreshold(content.getResources()
-                .getDisplayMetrics()
-                .widthPixels / 4);
-
+    protected void setupDraggableContent(final StepController controller, DraggableLinearLayout content){
+        content.setDragThreshold(content.getResources().getDisplayMetrics().widthPixels / 4);
         content.setDisabledOnThresholdReached(true);
         content.setSnapBackOnReleaseBelowThreshold(true);
 

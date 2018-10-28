@@ -15,6 +15,8 @@ import com.guardanis.steps.views.nav.IndicatorView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 public class StepController {
 
     public interface StepEventListener {
@@ -42,7 +44,7 @@ public class StepController {
 
     private boolean animatingTransition = false;
 
-    public StepController(View root, List<StepModule> modules, StepEventListener eventListener){
+    public StepController(@NonNull View root, @NonNull List<StepModule> modules, @NonNull StepEventListener eventListener){
         this.parentView = (ViewGroup) root.findViewById(R.id.step__content_parent);
         this.indicatorController = new IndicatorController(this, root);
         this.modules = modules;
@@ -102,11 +104,9 @@ public class StepController {
 
         if(parentView.getChildAt(0) != null)
             parentView.getChildAt(0)
-                    .startAnimation(AnimationUtils.loadAnimation(parentView.getContext(),
-                            R.anim.left_out));
+                    .startAnimation(AnimationUtils.loadAnimation(parentView.getContext(), R.anim.left_out));
 
-        view.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(),
-                R.anim.right_in));
+        view.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(), R.anim.right_in));
 
         setDraggableTouchesEnabled(view, false);
 
@@ -115,14 +115,12 @@ public class StepController {
 
     private void animatePreviousStepIn() {
         final View view = prepareTransition();
+        final View firstChild = parentView.getChildAt(0);
 
-        if(parentView.getChildAt(0) != null)
-            parentView.getChildAt(0)
-                    .startAnimation(AnimationUtils.loadAnimation(parentView.getContext(),
-                            R.anim.right_out));
+        if(firstChild != null)
+            firstChild.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(), R.anim.right_out));
 
-        view.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(),
-                R.anim.left_in));
+        view.startAnimation(AnimationUtils.loadAnimation(parentView.getContext(), R.anim.left_in));
 
         setDraggableTouchesEnabled(view, false);
 
@@ -171,12 +169,9 @@ public class StepController {
 
         requestHeightRetention(content);
 
-        indicatorController.update(this,
-                currentModuleIndex,
-                modules.size());
+        indicatorController.update(this, currentModuleIndex, modules.size());
 
-        eventListener.onStepLoaded(getActiveModule(),
-                currentModuleIndex);
+        eventListener.onStepLoaded(getActiveModule(), currentModuleIndex);
     }
 
     private void requestHeightRetention(final View content){
@@ -206,29 +201,30 @@ public class StepController {
     }
 
     protected void setDraggableTouchesEnabled(boolean touchEnabled){
-        if(parentView.getChildAt(0) != null)
-            setDraggableTouchesEnabled(parentView.getChildAt(0),
-                    touchEnabled);
+        final View firstChild = parentView.getChildAt(0);
+
+        if(firstChild != null)
+            setDraggableTouchesEnabled(firstChild, touchEnabled);
     }
 
     protected void setDraggableTouchesEnabled(View view, boolean touchEnabled){
         if(view != null && view instanceof DraggableLinearLayout)
-            ((DraggableLinearLayout)view)
+            ((DraggableLinearLayout) view)
                     .setDragEnabled(touchEnabled);
     }
 
     protected void resetDraggableContent(boolean animateSnap){
-        if(parentView.getChildAt(0) != null && parentView.getChildAt(0) instanceof DraggableLinearLayout)
-            ((DraggableLinearLayout)parentView.getChildAt(0))
+        final View firstChild = parentView.getChildAt(0);
+
+        if(firstChild != null && firstChild instanceof DraggableLinearLayout)
+            ((DraggableLinearLayout) firstChild)
                     .reset(animateSnap);
     }
 
     public StepController setSkipEnabled(boolean skipEnabled) {
         this.skipEnabled = skipEnabled;
 
-        indicatorController.update(this,
-                currentModuleIndex,
-                modules.size());
+        indicatorController.update(this, currentModuleIndex, modules.size());
 
         return this;
     }
@@ -240,10 +236,7 @@ public class StepController {
      */
     public StepController setNavigationActionsHidden(boolean hidden){
         indicatorController.setHideAllActions(hidden);
-
-        indicatorController.update(this,
-                currentModuleIndex,
-                modules.size());
+        indicatorController.update(this, currentModuleIndex, modules.size());
 
         return this;
     }
