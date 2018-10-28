@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    compile('com.guardanis:steps:1.1.3')
+    implementation 'com.guardanis:steps:2.0.0'
 }
 ```
 
