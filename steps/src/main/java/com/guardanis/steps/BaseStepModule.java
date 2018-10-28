@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BaseStepModule<T extends StepController> extends StepModule<T> {
+public class BaseStepModule extends StepModule {
 
     private int logoResId;
     private String title;
@@ -21,16 +21,16 @@ public class BaseStepModule<T extends StepController> extends StepModule<T> {
 
     public BaseStepModule(int logoResId, String title, String description) {
         super(R.layout.step__base_module);
+
         this.logoResId = logoResId;
         this.title = title;
         this.description = description;
     }
 
     @Override
-    protected void setup(T controller, View content) {
+    protected void setup(StepController controller, View content) {
         ((ImageView) content.findViewById(R.id.step__base_model_image)).setImageResource(logoResId);
         ((TextView) content.findViewById(R.id.step__base_model_title)).setText(title);
         ((TextView) content.findViewById(R.id.step__base_model_description)).setText(description);
     }
-
 }

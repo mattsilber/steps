@@ -1,0 +1,39 @@
+buildscript {
+    ext.kotlin_version = '1.2.51'
+
+    dependencies {
+        classpath 'com.novoda:gradle-android-command-plugin:1.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'android-command'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+    }
+
+    sourceSets.main.assets.srcDirs = ['assets']
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "com.google.android.material:material:1.0.0"
+
+    implementation "com.airbnb.android:lottie:2.8.0"
+
+    implementation project(path: ':steps')
+
+    implementation "com.guardanis:font-utils:1.0.2"
+}
+

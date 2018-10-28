@@ -6,7 +6,7 @@
 /build
 /captures
 .idea/*
-gradle/*
-gradlew
-gradlew.bat
 *.iml
+
+steps/build
+steps-sample/build

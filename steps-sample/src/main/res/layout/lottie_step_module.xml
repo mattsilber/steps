@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.guardanis.steps.views.draggable.DraggableLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dip" >
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_module_animation"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
+
+    <com.guardanis.fontutils.TextView
+        android:id="@+id/lottie_module_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="16dip"
+        android:text="Some title text"
+        android:textColor="@color/base__text_white"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+</com.guardanis.steps.views.draggable.DraggableLinearLayout>

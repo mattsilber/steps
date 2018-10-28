@@ -5,28 +5,42 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.guardanis.steps.StepController.StepEventListener;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+
 public class StepDialogBuilder implements StepController.StepEventListener {
 
-    private Dialog dialog;
-    private StepEventListener eventListener;
+    protected Dialog dialog;
 
-    public StepDialogBuilder(StepEventListener eventListener){
+    protected List<StepModule> modules;
+    protected StepEventListener eventListener;
+
+    protected boolean cancelable = false;
+
+    public StepDialogBuilder(@NonNull List<StepModule> modules){
+        this.modules = modules;
+    }
+
+    public StepDialogBuilder setEventListener(@Nullable StepEventListener eventListener){
         this.eventListener = eventListener;
+        return this;
     }
 
-    public StepController show(Activity activity, List<StepModule> modules){
-        return show(activity, modules, false);
+    public StepDialogBuilder setCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
+        return this;
     }
 
-    public StepController show(Activity activity, List<StepModule> modules, boolean cancelable){
-        View v = activity.getLayoutInflater().inflate(R.layout.step__content, null, false);
+    public StepController show(@NonNull Activity activity){
+        View v = activity.getLayoutInflater()
+                .inflate(R.layout.step__content, null, false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setCancelable(cancelable)
@@ -77,7 +91,6 @@ public class StepDialogBuilder implements StepController.StepEventListener {
         catch(IllegalArgumentException e){ }
         catch(Throwable e){ }
 
-        dialog = null;
+        this.dialog = null;
     }
-
 }
