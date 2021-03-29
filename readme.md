@@ -1,5 +1,7 @@
 # steps
 
+[![Download](https://img.shields.io/maven-central/v/com.guardanis/steps)](https://search.maven.org/artifact/com.guardanis/steps)
+
 A controller enabling a paginated layout style in either a Dialog or a full-screen Activity.
 
 ![Steps Sample](https://github.com/mattsilber/steps/raw/master/steps.gif)
@@ -8,11 +10,11 @@ A controller enabling a paginated layout style in either a Dialog or a full-scre
 
 ```groovy
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'com.guardanis:steps:2.0.0'
+    implementation 'com.guardanis:steps:2.0.1'
 }
 ```
 
@@ -97,3 +99,6 @@ new BaseStepModule(R.drawable.some_image, "Some title", "Some description"));
 ```
 
 
+### Moved to MavenCentral
+
+As of version 2.0.1, steps will be hosted on MavenCentral. Versions 2.0.0 and below will remain on JCenter.
