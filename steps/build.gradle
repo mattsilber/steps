@@ -1,50 +1,17 @@
-buildscript {
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-    }
-}
-
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion rootProject.ext.targetSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 28
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        targetSdkVersion rootProject.ext.targetSdkVersion
     }
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.2.0"
 }
 
-group = 'com.guardanis'
-
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'steps'
-
-    publishedGroupId = 'com.guardanis'
-    libraryName = 'steps'
-    artifact = 'steps'
-
-    libraryDescription = 'A controller enabling a paginated layout style'
-    libraryVersion = '2.0.0'
-
-    developerId = 'mattsilber'
-    developerName = 'Matt Silber'
-    developerEmail = 'matt@guardanis.com'
-}
-
-apply from: 'https://raw.githubusercontent.com/attwellBrian/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/attwellBrian/JCenter/master/bintrayv1.gradle'
+apply from: "./publishing.gradle"
